@@ -1,0 +1,40 @@
+//Design Code
+module fa(output sum,carry,input a,b,c);
+  wire o1,o2,o3;
+  exor_gate a1(o1,a,b);
+  exor_gate a2(sum,o1,c);
+  and a3(o2,c,o1);
+  and a4(o3,a,b);
+  or a5(carry,o2,o3);
+endmodule
+
+module exor_gate(output out,input a,b);
+  assign out=a^b;
+endmodule
+
+//Test Bench Code
+module tb();
+  wire sum,carry;
+  reg a,b,c;
+  fa DUT(sum,carry,a,b,c);
+  initial
+    begin
+      integer i;
+      for(i=0;i<8;i=i+1)
+        begin
+          {a,b,c}=i;
+          #10;
+        end
+      $finish;
+    end
+  initial
+    begin
+      $monitor("a=%b,b=%b,c=%b,sum=%b,carry=%b",a,b,c,sum,carry);
+    end
+  initial
+    begin
+      $dumpfile("test.vcd");
+      $dumpvars(1);
+    end
+endmodule
+
